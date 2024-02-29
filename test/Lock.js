@@ -3,6 +3,8 @@ const { ethers } = require("hardhat");
 
 describe("Dex Test Cases", async () => {
   let erc20token0, ERC20token0, erc20token1, ERC20token1, factory, Factory;
+  const [user1, user2] = await ethers.getSigners();
+
 
   beforeEach(async () => {
     //              Token 1 deploynment
@@ -17,12 +19,11 @@ describe("Dex Test Cases", async () => {
     factory = await ethers.getContractFactory("factory");
     Factory = await factory.deploy();
 
-    [user1, user2] = await ethers.getSigners();
   });
 
     //              Token 1 contract test cases 
-    describe("Token 1 Contract test ",function(){
-      const totalSupply = ERC20token0.totalSupply({from:user1});
-      except(totalSupply.toNumber()).to.equal(0)
+    describe("Token 1 Contract test ",async()=>{
+      const totalSupply = ERC20token0.totalSupply(ERC20token0.signer);
+      except(totalSupply).to.equal(0)
     })
 });
