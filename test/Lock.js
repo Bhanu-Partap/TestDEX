@@ -11,7 +11,7 @@ describe("Dex Test Cases", async () => {
 
     //              Token 2 deploynment
     erc20token1 = await ethers.getContractFactory("erc20token");
-    ERC20token1 = await erc20token0.deploy("Ethereum", "ETH");
+    ERC20token1 = await erc20token0.deploy("Bitcoin", "BTC");
 
     //              Factory Contract deploynment
     factory = await ethers.getContractFactory("factory");
@@ -19,4 +19,10 @@ describe("Dex Test Cases", async () => {
 
     [user1, user2] = await ethers.getSigners();
   });
+
+    //              Token 1 contract test cases 
+    describe("Token 1 Contract test ",function(){
+      const totalSupply = ERC20token0.totalSupply({from:user1});
+      except(totalSupply.toNumber()).to.equal(0)
+    })
 });
