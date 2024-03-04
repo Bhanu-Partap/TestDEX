@@ -1,29 +1,37 @@
-const { except } = require("chai");
+const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Dex Test Cases", async () => {
-  let erc20token0, ERC20token0, erc20token1, ERC20token1, factory, Factory;
-  const [user1, user2] = await ethers.getSigners();
-
+  let ERC20token0, ERC20token1;
 
   beforeEach(async () => {
+  const [user1, user2, owner] = await ethers.getSigners();
+
     //              Token 1 deploynment
-    erc20token0 = await ethers.getContractFactory("erc20token");
-    ERC20token0 = await erc20token0.deploy("Ethereum", "ETH");
+    let erc20token0 = await ethers.getContractFactory("erc20token");
+    let ERC20token0 = await erc20token0.deploy("Ethereum", "ETH");
 
     //              Token 2 deploynment
-    erc20token1 = await ethers.getContractFactory("erc20token");
-    ERC20token1 = await erc20token0.deploy("Bitcoin", "BTC");
+    let erc20token1 = await ethers.getContractFactory("erc20token");
+    let ERC20token1 = await erc20token1.deploy("Bitcoin", "BTC");
 
     //              Factory Contract deploynment
-    factory = await ethers.getContractFactory("factory");
-    Factory = await factory.deploy();
+    let factory = await ethers.getContractFactory("factory");
+    let Factory = await factory.deploy();
+    Factory.connect(owner.address )
 
   });
 
     //              Token 1 contract test cases 
-    describe("Token 1 Contract test ",async()=>{
-      const totalSupply = ERC20token0.totalSupply(ERC20token0.signer);
-      except(totalSupply).to.equal(0)
-    })
+    it("Should the total supply of token0 is 0", async () => {
+      let erc20token0 = await ethers.getContractFactory("erc20token");
+      let ERC20token0 = await erc20token0.deploy("Ethereum", "ETH");
+      const totalSupply = await ERC20token0.totalSupply()
+      // const initialsupply = ethers.utils.parseEther("0")
+      expect(totalSupply).to.equal(0);
+    });
+
+    // it("Token 1 Contract test ",async ()=>{
+    //    owner = await ERC20token0.; 
+    // })
 });
