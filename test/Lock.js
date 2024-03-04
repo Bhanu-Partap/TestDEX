@@ -34,7 +34,7 @@ describe("Dex Test Cases", async () => {
     });
 
     //              Token 2 contract test cases 
-    it("Should the total supply of token0 is 0", async () => {
+    it("Should the total supply of token1 is 0", async () => {
       const totalSupply = await ERC20token0.totalSupply()
       expect(totalSupply).to.equal(0);
     });
