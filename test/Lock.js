@@ -44,4 +44,11 @@ describe("Dex Test Cases", async () => {
       expect(decimal).to.equal(4);
     });
 
+    it("Checking the length of the pair before pair creation", async () => {
+      const allPairsLength = await Factory.allPairsLength()
+      expect(allPairsLength).to.equal(0);
+    });
+
+    
+
 });
