@@ -33,4 +33,15 @@ describe("Dex Test Cases", async () => {
       expect(decimal).to.equal(4);
     });
 
+    //              Token 2 contract test cases 
+    it("Should the total supply of token0 is 0", async () => {
+      const totalSupply = await ERC20token0.totalSupply()
+      expect(totalSupply).to.equal(0);
+    });
+
+    it("Should have to 4 decimal", async () => {
+      const decimal = await ERC20token0.decimals()
+      expect(decimal).to.equal(4);
+    });
+
 });
