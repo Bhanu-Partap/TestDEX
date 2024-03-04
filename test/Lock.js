@@ -28,25 +28,42 @@ describe("Dex Test Cases", async () => {
       expect(totalSupply).to.equal(0);
     });
 
-    it("Should have to 4 decimal", async () => {
+    it("Should token0 have up to 4 decimal", async () => {
       const decimal = await ERC20token0.decimals()
       expect(decimal).to.equal(4);
     });
 
+    // it("minting the tokenn in user account", async () => {
+    //   const mint = await ERC20token0.connect(owner.address).PublicMint(owner.address, "100")
+    //   const balance = await ERC20token0.connect(owner.address).balanceOf(owner.address)
+    //   expect(decimal).to.equal(4);
+    // });
+
     //              Token 2 contract test cases 
     it("Should the total supply of token1 is 0", async () => {
-      const totalSupply = await ERC20token0.totalSupply()
+      const totalSupply = await ERC20token1.totalSupply()
       expect(totalSupply).to.equal(0);
     });
 
-    it("Should have to 4 decimal", async () => {
-      const decimal = await ERC20token0.decimals()
+    it("Should token1 have up to 4 decimal", async () => {
+      const decimal = await ERC20token1.decimals()
       expect(decimal).to.equal(4);
     });
 
     it("Checking the length of the pair before pair creation", async () => {
       const allPairsLength = await Factory.allPairsLength()
       expect(allPairsLength).to.equal(0);
+    });
+
+    it("Creating a new Pair", async () => {
+      const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
+      // await createPair.wait();
+      const allPairsLength = await Factory.allPairsLength()
+      expect(allPairsLength).to.equal(1);
+
+      // const [event] = await Factory.queryFilter(Factory.PairCreated,null, null)
+      // expect(event.args.ERC20token0).to.equal(ERC20token0.getAddress())
+      // expect(event.args.ERC20token1).to.equal(ERC20token1.getAddress())
     });
 
     
