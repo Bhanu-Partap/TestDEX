@@ -67,17 +67,16 @@ describe("Dex Test Cases", async () => {
       const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       await createPair.wait();
       const GetPair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-      // console.log(GetPair);
       const allPairsLength = await Factory.allPairsLength()
-      const allPAir = await Factory.allPairs(0)
+      // const allPairreadable = await allPairsLength.toNumber()
+      const allPair = await Factory.allPairs[0]
       // const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length ))
       // const pairCreated = await Factory.queryFilter(Factory.filters.PairCreated(null, null,null,null))
       // const pairt =  await pairCreated[0].args.ERC20token0 ;
       // expect(pairCreated.length).to.equal(1);
       console.log(await ERC20token1.getAddress());
       console.log(await ERC20token0.getAddress());
-      console.log( allPAir[0].address);
-      console.log( allPairsLength.length);
+      console.log(allPairsLength.toString());
       expect(createPair).to.emit(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length );
     });
 
