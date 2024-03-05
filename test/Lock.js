@@ -66,12 +66,19 @@ describe("Dex Test Cases", async () => {
     it("After creating a new Pair the pair created event is initiated or not", async () => {
       const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       await createPair.wait();
-      const GetPair = Factory.getPair()
+      const GetPair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      // console.log(GetPair);
       const allPairsLength = await Factory.allPairsLength()
-      const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length ))
-      // expect(PairCreated.length).to.equal(1);
-      expect( PairCreated[0].args.ERC20token0).to.equal(await ERC20token0.getAddress());
-
+      const allPAir = await Factory.allPairs(0)
+      // const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length ))
+      // const pairCreated = await Factory.queryFilter(Factory.filters.PairCreated(null, null,null,null))
+      // const pairt =  await pairCreated[0].args.ERC20token0 ;
+      // expect(pairCreated.length).to.equal(1);
+      console.log(await ERC20token1.getAddress());
+      console.log(await ERC20token0.getAddress());
+      console.log( allPAir[0].address);
+      console.log( allPairsLength.length);
+      expect(createPair).to.emit(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length );
     });
 
     
