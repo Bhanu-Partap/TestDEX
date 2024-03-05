@@ -3,9 +3,10 @@ const { ethers } = require("hardhat");
 
 describe("Dex Test Cases", async () => {
   let ERC20token0, ERC20token1, Factory;
-
+  let owner, user1 , user2;
+  
   beforeEach(async () => {
-  const [user1, user2, owner] = await ethers.getSigners();
+    [user1, user2, owner] = await ethers.getSigners();
 
     //              Token 1 deploynment
     let erc20token0 = await ethers.getContractFactory("erc20token");
@@ -33,11 +34,11 @@ describe("Dex Test Cases", async () => {
       expect(decimal).to.equal(4);
     });
 
-    // it("minting the tokenn in user account", async () => {
-    //   const mint = await ERC20token0.connect(owner.address).PublicMint(owner.address, "100")
-    //   const balance = await ERC20token0.connect(owner.address).balanceOf(owner.address)
-    //   expect(decimal).to.equal(4);
-    // });
+    it("minting the token0 in user account", async () => {
+      const mint = await ERC20token0.PublicMint(owner.address, 100)
+      const balance = await ERC20token0.balanceOf(owner.address)
+      expect(balance).to.equal(100);
+    });
 
     //              Token 2 contract test cases 
     it("Should the total supply of token1 is 0", async () => {
@@ -60,10 +61,13 @@ describe("Dex Test Cases", async () => {
       // await createPair.wait();
       const allPairsLength = await Factory.allPairsLength()
       expect(allPairsLength).to.equal(1);
+    });
 
-      // const [event] = await Factory.queryFilter(Factory.PairCreated,null, null)
-      // expect(event.args.ERC20token0).to.equal(ERC20token0.getAddress())
-      // expect(event.args.ERC20token1).to.equal(ERC20token1.getAddress())
+    it("After creating a new Pair the pair created event is initiated or not", async () => {
+      const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
+      await createPair.wait();
+      const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(),ERC20token1.getAddress() ))
+      expect(allPairsLength).to.equal(1);
     });
 
     
