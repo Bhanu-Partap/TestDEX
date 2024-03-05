@@ -66,8 +66,12 @@ describe("Dex Test Cases", async () => {
     it("After creating a new Pair the pair created event is initiated or not", async () => {
       const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       await createPair.wait();
-      const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(),ERC20token1.getAddress() ))
-      expect(allPairsLength).to.equal(1);
+      const GetPair = Factory.getPair()
+      const allPairsLength = await Factory.allPairsLength()
+      const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length ))
+      // expect(PairCreated.length).to.equal(1);
+      expect( PairCreated[0].args.ERC20token0).to.equal(await ERC20token0.getAddress());
+
     });
 
     
