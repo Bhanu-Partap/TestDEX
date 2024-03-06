@@ -89,6 +89,10 @@ describe("Dex Test Cases", async () => {
       expect(pairt).to.emit(ERC20token0.getAddress());
     });
 
+    it("Token Address should not be Identical", async () => {
+      // const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
+      expect(await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())).to.be.revertedWith("Identical Address")
+    });
     
 
 });
