@@ -69,24 +69,24 @@ describe("Dex Test Cases", async () => {
       const GetPair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const allPairsLength = await Factory.allPairsLength()
 
-      console.log(allPairsLength.toString());
+      // console.log(allPairsLength.toString());
       
       //==== Getting the pool contract address=====//
       // console.log(GetPair.toString());
 
-      console.log(await ERC20token1.getAddress());
-      console.log(await ERC20token0.getAddress());
+      // console.log(await ERC20token1.getAddress());
+      // console.log(await ERC20token0.getAddress());
+
       expect(GetPair.toString()).to.equal("0xf3eE3C4Ec25e8414838567818A30C90c7d62f834")
       expect(allPairsLength).to.equal(1)
-
 
       ///=========== Event emit in solidity function===========///
       // const PairCreated = await Factory.queryFilter(Factory.filters.PairCreated(ERC20token0.getAddress(), ERC20token1.getAddress(),GetPair.address,allPairsLength.length ))
       const pairCreated = await Factory.queryFilter(Factory.filters.PairCreated(null, null,null,null))
-      const pairt =  await pairCreated[0].args.ERC20token0 ;
-      console.log(pairt);
+      const pairt =  await pairCreated[0].args[1] ;
+      // console.log(pairt);
       expect(pairCreated.length).to.equal(1);
-      expect(pairCreated[0].args.ERC20token0).to.emit(ERC20token0.getAddress());
+      expect(pairt).to.emit(ERC20token0.getAddress());
     });
 
     
