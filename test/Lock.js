@@ -90,8 +90,15 @@ describe("Dex Test Cases", async () => {
     });
 
     it("Token Address should not be Identical", async () => {
-      // const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       expect(await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())).to.be.revertedWith("Identical Address")
+    });
+
+    it("Token Address should not be zero or (0x000)", async () => {
+      const erc200addr =await ERC20token0.connect("0x00000000000000000000000000000000000000").attach("0x00000000000000000000000000000000000000")
+      console.log(erc200addr.target);
+      const add = await Factory.createPair(erc200addr.getAddress(),erc200addr.getAddress());
+      console.log(add);
+      expect(await Factory.createPair(erc200addr.target,erc200addr.target)).to.be.revertedWith("Zero Address")
     });
     
 
