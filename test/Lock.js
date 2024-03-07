@@ -102,10 +102,23 @@ describe("Dex Test Cases", async () => {
 
     it("Pair exist already", async () => {
       // const erc20addr =await ERC20token0.attach("0x0000000000000000000000000000000000000000")
-      const createPair= await Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const againCreatePair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       expect(againCreatePair).to.be.revertedWith("PAIR_EXISTS")
+     
     });
+
+
+    it("Token Address should not be Identical", async () => {
+        expect(Factory.addLiquidity(ERC20token0.getAddress(),ERC20token0.getAddress(),100,100)).to.be.revertedWith("IDENTICAL_ADDRESSES")
+    });
+    
+      
+    // it("Token Address should not be Identical", async () => {
+    //   const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
+    //   console.log(erc20addr);
+    //   expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
+    // });
     
 
 });
