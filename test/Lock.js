@@ -115,6 +115,11 @@ describe("Dex Test Cases", async () => {
       const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
       await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
     });
+
+    // it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
+    //   const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
+    //   await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("reserves are not in sync")
+    // });
     
 
 });
