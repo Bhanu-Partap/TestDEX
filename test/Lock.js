@@ -24,48 +24,48 @@ describe("Dex Test Cases", async () => {
   });
 
     //              Token 1 contract test cases 
-    it("Should the total supply of token0 is 0", async () => {
+    it("  Should the total supply of token0 is 0", async () => {
       const totalSupply = await ERC20token0.totalSupply()
       expect(totalSupply).to.equal(0);
     });
 
-    it("Should token0 have up to 4 decimal", async () => {
+    it("  Should token0 have up to 4 decimal", async () => {
       const decimal = await ERC20token0.decimals()
       expect(decimal).to.equal(4);
     });
 
-    it("minting the token0 in user account", async () => {
+    it("  minting the token0 in user account", async () => {
       const mint = await ERC20token0.PublicMint(owner.address, 100)
       const balance = await ERC20token0.balanceOf(owner.address)
       expect(balance).to.equal(100);
     });
 
     //              Token 2 contract test cases 
-    it("Should the total supply of token1 is 0", async () => {
+    it("  Should the total supply of token1 is 0", async () => {
       const totalSupply = await ERC20token1.totalSupply()
       expect(totalSupply).to.equal(0);
     });
 
-    it("Should token1 have up to 4 decimal", async () => {
+    it("  Should token1 have up to 4 decimal", async () => {
       const decimal = await ERC20token1.decimals()
       expect(decimal).to.equal(4);
     });
 
-    it("Checking the length of the pair before pair creation", async () => {
+    it("  Checking the length of the pair before pair creation", async () => {
       const allPairsLength = await Factory.allPairsLength()
       expect(allPairsLength).to.equal(0);
     });
 
     //=================Factory Contract Test Cases=====================//
 
-    it("Creating a new Pair", async () => {
+    it("CREATE PAIR : Creating a new Pair", async () => {
       const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       await createPair.wait();
       const allPairsLength = await Factory.allPairsLength()
       expect(allPairsLength).to.equal(1);
     });
 
-    it("After creating a new Pair the pair created event is initiated or not", async () => {
+    it("  After creating a new Pair the pair created event is initiated or not", async () => {
       const createPair = await Factory.createPair(ERC20token0.getAddress(),ERC20token1.getAddress())
       await createPair.wait();
       const GetPair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
@@ -91,34 +91,30 @@ describe("Dex Test Cases", async () => {
       expect(pairt).to.emit(ERC20token0.getAddress());
     });
 
-    it("Token Address should not be Identical", async () => {
-      expect( Factory.createPair(ERC20token0.getAddress(),ERC20token0.getAddress())).to.be.revertedWith("Identical Address")
+    it("  Token Address should not be Identical", async () => {
+      await expect( Factory.createPair(ERC20token0.getAddress(),ERC20token0.getAddress())).to.be.revertedWith("UniswapV2: IDENTICAL_ADDRESSES")
     });
 
-    it("Token Address should not be zero or (0x000)", async () => {
+    it("  Token Address should not be zero or (0x000)", async () => {
       const erc20addr =await ERC20token0.attach("0x0000000000000000000000000000000000000000")
-      expect(Factory.createPair(erc20addr.target,ERC20token0.getAddress())).to.be.revertedWith("ZERO_ADDRESS")
+      await expect(Factory.createPair(erc20addr.target,ERC20token0.getAddress())).to.be.revertedWith("ZERO_ADDRESS")
     });
 
-    it("Pair exist already", async () => {
-      // const erc20addr =await ERC20token0.attach("0x0000000000000000000000000000000000000000")
+    it("  Pair exist already", async () => {
       const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-      const againCreatePair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-      expect(againCreatePair).to.be.revertedWith("PAIR_EXISTS")
-     
+      await expect(Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())).to.be.revertedWith("PAIR_EXISTS")
     });
 
 
-    it("Token Address should not be Identical", async () => {
-        expect(Factory.addLiquidity(ERC20token0.getAddress(),ERC20token0.getAddress(),100,100)).to.be.revertedWith("IDENTICAL_ADDRESSES")
+    it("ADD LIQUIDITY : Token Address should not be Identical", async () => {
+      await expect(Factory.addLiquidity(ERC20token0.getAddress(),ERC20token0.getAddress(),100,100)).to.be.revertedWith("IDENTICAL_ADDRESSES")
     });
     
       
-    // it("Token Address should not be Identical", async () => {
-    //   const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
-    //   console.log(erc20addr);
-    //   expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
-    // });
+    it("  Token Address should not be Identical", async () => {
+      const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
+      await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
+    });
     
 
 });
