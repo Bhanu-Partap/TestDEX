@@ -128,19 +128,19 @@ describe("Dex Test Cases", async () => {
       const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const lpTokenBalance = await lpTokens.balanceOf(user1.address)
-      console.log(lpTokenBalance);
+      console.log("Lp Tokens issued : ",lpTokenBalance);
       const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
       // console.log(RemoveLiquidity);
       const Token0reserve = await pool.reserveToken0()
       const Token1reserve = await pool.reserveToken1()
-      console.log(Token0reserve);
-      console.log(Token1reserve);
+      console.log("Reserve Token 0 before swap:",Token0reserve);
+      console.log("Reserve Token 1 before swap:",Token1reserve);
       const swap = await Factory.connect(user1).swap(ERC20token0.getAddress(), ERC20token1.getAddress(), 10)
       const Token0reserveafteradd = await pool.reserveToken0()
       const Token1reserveafteradd = await pool.reserveToken1()
-      console.log(Token0reserveafteradd);
-      console.log(Token1reserveafteradd);
-      const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
+      console.log("Reserve Token 0 after swap:",Token0reserveafteradd);
+      console.log("Reserve Token 1 after swap:",Token1reserveafteradd);
+      const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
       await expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
     });
 
