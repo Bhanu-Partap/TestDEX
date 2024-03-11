@@ -116,10 +116,21 @@ describe("Dex Test Cases", async () => {
       await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
     });
 
-    // it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
-    //   const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
-    //   await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("reserves are not in sync")
-    // });
+    it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
+      // const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      const _reserve0 = 100;
+      const _reserve1 = 100 ;
+      await ERC20token0.PublicMint(user1.address, 1000)
+      // console.log(await ERC20token0.balanceOf(user1.address)); 
+      await ERC20token1.PublicMint(user1.address, 1000)
+      // console.log(await ERC20token1.balanceOf(user1.address)); 
+      const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      // console.log(addLiquidity1);
+      const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 10)
+      console.log(RemoveLiquidity);
+      // const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      // expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
+    });
     
 
 });
