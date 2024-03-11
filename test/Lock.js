@@ -128,11 +128,10 @@ describe("Dex Test Cases", async () => {
       await ERC20token0.PublicMint(user1.address, 1000)
       await ERC20token1.PublicMint(user1.address, 1000)
       const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
-      // Vault = await pool.LP()
-      lpTokens.
+      const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      const lpTokenBalance = await lpTokens.balanceOf(user1.address)
+      console.log(lpTokenBalance);
 
-      // const lptokens = await pool.Lp()
-      // console.log(lptokens);
 
       // const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
       // console.log(RemoveLiquidity);
