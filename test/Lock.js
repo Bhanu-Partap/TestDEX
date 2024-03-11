@@ -123,21 +123,38 @@ describe("Dex Test Cases", async () => {
 
     it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
       const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-      const _reserve0 = 100;
-      const _reserve1 = 100 ;
       await ERC20token0.PublicMint(user1.address, 1000)
       await ERC20token1.PublicMint(user1.address, 1000)
       const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const lpTokenBalance = await lpTokens.balanceOf(user1.address)
       console.log(lpTokenBalance);
-
-
-      // const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
+      const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
       // console.log(RemoveLiquidity);
-      // const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
-      // expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
+      const Token0reserve = await pool.reserveToken0()
+      const Token1reserve = await pool.reserveToken1()
+      console.log(Token0reserve);
+      console.log(Token1reserve);
+      const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
+      const Token0reserveafteradd = await pool.reserveToken0()
+      const Token1reserveafteradd = await pool.reserveToken1()
+      await expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
     });
+
+    
+    // it("  liquidity needed to be in ratio according existing ones ", async () => {
+    //   const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+    //   await ERC20token0.PublicMint(user1.address, 1000)
+    //   await ERC20token1.PublicMint(user1.address, 1000)
+    //   const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+    //   const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+    //   const lpTokenBalance = await lpTokens.balanceOf(user1.address)
+    //   console.log(lpTokenBalance);
+    //   const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
+    //   // console.log(RemoveLiquidity);
+    //   const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
+    //   expect(addLiquidity2).to.be.revertedWith("liquidity needed to be in ratio according existing ones")
+    // });
     
 
 });
