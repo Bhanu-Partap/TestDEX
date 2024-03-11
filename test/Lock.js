@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Dex Test Cases", async () => {
-  let ERC20token0, ERC20token1, Factory;
+  let ERC20token0, ERC20token1, Factory, pool, lpTokens;
   let owner, user1 , user2;
   
   beforeEach(async () => {
@@ -19,7 +19,12 @@ describe("Dex Test Cases", async () => {
     //              Factory Contract deploynment
     let factory = await ethers.getContractFactory("factory");
     Factory = await factory.deploy();
+    let pair = await ethers.getContractFactory("pool");
+    pool=  pair.attach("0x94B9874aC5605713CcAc00ca8E832B37e15c1399")
+    let Vault = await ethers.getContractFactory("Vault")
+    lpTokens = Vault.attach("0x5A56bC31C437d62e7608EAc1e2368148dd0D2941")
     Factory.connect(owner.address )
+
 
   });
 
@@ -117,17 +122,20 @@ describe("Dex Test Cases", async () => {
     });
 
     it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
-      // const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const _reserve0 = 100;
       const _reserve1 = 100 ;
       await ERC20token0.PublicMint(user1.address, 1000)
-      // console.log(await ERC20token0.balanceOf(user1.address)); 
       await ERC20token1.PublicMint(user1.address, 1000)
-      // console.log(await ERC20token1.balanceOf(user1.address)); 
       const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
-      // console.log(addLiquidity1);
-      const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 10)
-      console.log(RemoveLiquidity);
+      // Vault = await pool.LP()
+      lpTokens.
+
+      // const lptokens = await pool.Lp()
+      // console.log(lptokens);
+
+      // const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
+      // console.log(RemoveLiquidity);
       // const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       // expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
     });
