@@ -159,9 +159,9 @@ contract factory {
     }
 
     function swap(
+        erc20token tokenIN,
         erc20token tokenOUT,
-        uint256 amountIN,
-        erc20token tokenIN
+        uint256 amountIN
     ) public returns (string memory) {
         address caller = msg.sender;
         require(tokenIN.balanceOf(caller) > amountIN, "not enough balance");

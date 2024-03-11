@@ -135,9 +135,12 @@ describe("Dex Test Cases", async () => {
       const Token1reserve = await pool.reserveToken1()
       console.log(Token0reserve);
       console.log(Token1reserve);
-      const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
+      const swap = await Factory.connect(user1).swap(ERC20token0.getAddress(), ERC20token1.getAddress(), 10)
       const Token0reserveafteradd = await pool.reserveToken0()
       const Token1reserveafteradd = await pool.reserveToken1()
+      console.log(Token0reserveafteradd);
+      console.log(Token1reserveafteradd);
+      const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
       await expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
     });
 
