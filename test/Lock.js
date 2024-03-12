@@ -152,7 +152,7 @@ describe("Dex Test Cases", async () => {
       const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       const lpTokenBalance = await lpTokens.balanceOf(user1.address)
-      console.log(lpTokenBalance);
+      // console.log(lpTokenBalance);
       const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
       // console.log(RemoveLiquidity);
       const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
@@ -167,6 +167,14 @@ describe("Dex Test Cases", async () => {
       const addLiquidity = Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       await expect(addLiquidity).to.be.revertedWith("not enough balance")
     });
+
+
+    it(" Event emit : PairCreated ", async () => {
+      await expect(Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())).to.emit(Factory, "PairCreated")
+    });
     
+
+    
+
 
 });
