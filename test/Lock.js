@@ -145,19 +145,19 @@ describe("Dex Test Cases", async () => {
     });
 
     
-    // it("  liquidity needed to be in ratio according existing ones ", async () => {
-    //   const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-    //   await ERC20token0.PublicMint(user1.address, 1000)
-    //   await ERC20token1.PublicMint(user1.address, 1000)
-    //   const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
-    //   const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
-    //   const lpTokenBalance = await lpTokens.balanceOf(user1.address)
-    //   console.log(lpTokenBalance);
-    //   const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
-    //   // console.log(RemoveLiquidity);
-    //   const addLiquidity2 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
-    //   expect(addLiquidity2).to.be.revertedWith("liquidity needed to be in ratio according existing ones")
-    // });
+    it("  liquidity needed to be in ratio according existing ones", async () => {
+      const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      await ERC20token0.PublicMint(user1.address, 1000)
+      await ERC20token1.PublicMint(user1.address, 1000)
+      const addLiquidity1 = await Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      const getpair = await Factory.getPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      const lpTokenBalance = await lpTokens.balanceOf(user1.address)
+      console.log(lpTokenBalance);
+      const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
+      // console.log(RemoveLiquidity);
+      const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
+      await expect(addLiquidity2).to.be.revertedWith("liquidity needed to be in ratio according existing ones")
+    });
     
 
 });
