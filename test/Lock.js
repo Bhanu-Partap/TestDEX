@@ -158,6 +158,15 @@ describe("Dex Test Cases", async () => {
       const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
       await expect(addLiquidity2).to.be.revertedWith("liquidity needed to be in ratio according existing ones")
     });
+
+
+    it(" Not enough balance while adding liquidity ", async () => {
+      const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      // await ERC20token0.PublicMint(user1.address, 1000)
+      // await ERC20token1.PublicMint(user1.address, 1000)
+      const addLiquidity = Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      await expect(addLiquidity).to.be.revertedWith("not enough balance")
+    });
     
 
 });
