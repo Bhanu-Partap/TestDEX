@@ -175,11 +175,16 @@ describe("Dex Test Cases", async () => {
 
 
     it(" Event emit : syncReserves ", async () => {
-      const createPair = await Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       await ERC20token0.PublicMint(user1.address, 200)
       await ERC20token1.PublicMint(user1.address, 200)
-      // const addLiquidity = await Factory.connect(user1.address).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       await expect(Factory.connect(user1).addLiquidity(ERC20token0.getAddress(), ERC20token1.getAddress(),100,100)).to.emit(Factory,"syncReserves")
+    });
+
+
+    it(" Event emit : liquidityAdded ", async () => {
+      await ERC20token0.PublicMint(user1.address, 200)
+      await ERC20token1.PublicMint(user1.address, 200)
+      await expect(Factory.connect(user1).addLiquidity(ERC20token0.getAddress(), ERC20token1.getAddress(),100,100)).to.emit(Factory,"liquidityAdded")
     });
     
 
