@@ -119,7 +119,7 @@ contract factory {
 
         pair.updateAfterLiquidity(_amount0, _amount1);
         emit syncReserves(pair, pair.reserveToken0(), pair.reserveToken1());
-        emit liquidityRemoved(pair, tokenA, tokenB, _amount0, _amount1);
+        emit liquidityAdded(pair, tokenA, tokenB, _amount0, _amount1);
         return ("add liquidity as this pair");
     }
 
