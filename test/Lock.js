@@ -193,7 +193,16 @@ describe("Dex Test Cases", async () => {
       const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       const swap =  Factory.connect(user1).swap(ERC20token0.getAddress(),ERC20token1.getAddress(),100)
       await expect(swap).to.be.revertedWith("not enough balance")
-    
+    });
+
+
+    it("SWAP : Event Emit : syncReserves", async () => {
+      await ERC20token0.PublicMint(user1.address, 1000)
+      await ERC20token1.PublicMint(user1.address, 1000)
+      const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      const swap =  Factory.connect(user1).swap(ERC20token0.getAddress(),ERC20token1.getAddress(),100)
+      await expect(swap).to.emit(Factory ,"syncReserves")
+  
     });
     
     
