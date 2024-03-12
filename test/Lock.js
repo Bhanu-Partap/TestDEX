@@ -115,12 +115,12 @@ describe("Dex Test Cases", async () => {
       await expect(Factory.addLiquidity(ERC20token0.getAddress(),ERC20token0.getAddress(),100,100)).to.be.revertedWith("IDENTICAL_ADDRESSES")
     });
     
-      
+    
     it("  Token Address should not be Identical", async () => {
       const erc20addr = ERC20token0.attach("0x0000000000000000000000000000000000000000")
       await expect(Factory.addLiquidity(erc20addr.target,ERC20token1.getAddress(),100,100)).to.be.revertedWith("ZERO_ADDRESS")
     });
-
+    
     it("  Token Reserve Should be in Sync For adding Liquidity", async () => {
       const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       await ERC20token0.PublicMint(user1.address, 1000)
@@ -143,7 +143,7 @@ describe("Dex Test Cases", async () => {
       const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10,100)
       await expect(addLiquidity2).to.be.revertedWith("reserves are not in sync")
     });
-
+    
     
     it("  liquidity needed to be in ratio according existing ones", async () => {
       const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
@@ -158,37 +158,45 @@ describe("Dex Test Cases", async () => {
       const addLiquidity2 =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),1000,100)
       await expect(addLiquidity2).to.be.revertedWith("liquidity needed to be in ratio according existing ones")
     });
-
-
+    
+    
     it(" Not enough balance while adding liquidity ", async () => {
       const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
       // await ERC20token0.PublicMint(user1.address, 1000)
       // await ERC20token1.PublicMint(user1.address, 1000)
-      const addLiquidity = Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
-      await expect(addLiquidity).to.be.revertedWith("not enough balance")
+      await expect(Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)).to.be.revertedWith("not enough balance")
     });
-
-
+    
+    
     it(" Event emit : PairCreated ", async () => {
       await expect(Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())).to.emit(Factory,"PairCreated")
     });
-
-
+    
+    
     it(" Event emit : syncReserves ", async () => {
       await ERC20token0.PublicMint(user1.address, 200)
       await ERC20token1.PublicMint(user1.address, 200)
       await expect(Factory.connect(user1).addLiquidity(ERC20token0.getAddress(), ERC20token1.getAddress(),100,100)).to.emit(Factory,"syncReserves")
     });
-
-
+    
+    
     it(" Event emit : liquidityAdded ", async () => {
       await ERC20token0.PublicMint(user1.address, 200)
       await ERC20token1.PublicMint(user1.address, 200)
       await expect(Factory.connect(user1).addLiquidity(ERC20token0.getAddress(), ERC20token1.getAddress(),100,100)).to.emit(Factory,"liquidityAdded")
     });
     
-
     
-
-
-});
+    it("SWAP : Not Enough Balance", async () => {
+      await ERC20token0.PublicMint(user1.address, 100)
+      await ERC20token1.PublicMint(user1.address, 100)
+      const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      const swap =  Factory.connect(user1).swap(ERC20token0.getAddress(),ERC20token1.getAddress(),100)
+      await expect(swap).to.be.revertedWith("not enough balance")
+    
+    });
+    
+    
+    
+  });
+  
