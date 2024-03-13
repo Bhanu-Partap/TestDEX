@@ -229,5 +229,17 @@ describe("Dex Test Cases", async () => {
       const removeLiquidity =  Factory.connect(user1).RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 1000)
       await expect(removeLiquidity).to.be.revertedWith("not added sufficient liquidity")
     });
+
+
+    it("  REMOVE LIQUIDITY : Event Emit : syncReserves", async () => {
+      await ERC20token0.PublicMint(user1.address, 1000)
+      await ERC20token1.PublicMint(user1.address, 1000)
+      const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      const removeLiquidity =  Factory.connect(user1).RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 10)
+      await expect(removeLiquidity).to.emit(Factory ,"syncReserves")
+    });
+
+
+
   });
   
