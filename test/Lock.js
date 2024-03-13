@@ -130,7 +130,6 @@ describe("Dex Test Cases", async () => {
       const lpTokenBalance = await lpTokens.balanceOf(user1.address)
       console.log("Lp Tokens issued : ",lpTokenBalance);
       const RemoveLiquidity = await Factory.RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),10)
-      // console.log(RemoveLiquidity);
       const Token0reserve = await pool.reserveToken0()
       const Token1reserve = await pool.reserveToken1()
       console.log("Reserve Token 0 before swap:",Token0reserve);
@@ -237,6 +236,17 @@ describe("Dex Test Cases", async () => {
       const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
       const removeLiquidity =  Factory.connect(user1).RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 10)
       await expect(removeLiquidity).to.emit(Factory ,"syncReserves")
+    });
+
+
+    it("  REMOVE LIQUIDITY : Event Emit : liquidityRemoved", async () => {
+      const createPair =  Factory.createPair(ERC20token0.getAddress(), ERC20token1.getAddress())
+      await ERC20token0.PublicMint(user1.address, 101)
+      await ERC20token1.PublicMint(user1.address, 101)
+      // User Balance should be greater 
+      const addLiquidity =  Factory.connect(user1).addLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(),100,100)
+      const removeLiquidity =  Factory.connect(user1).RemoveLiquidity(ERC20token0.getAddress(),ERC20token1.getAddress(), 10)
+      await expect(removeLiquidity).to.emit(Factory ,"liquidityRemoved")
     });
 
 
